@@ -1,0 +1,51 @@
+<!doctype html>
+
+<html lang="en">
+
+    <head>
+
+        <meta charset="utf-8">
+
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <meta name="description" content="">
+
+        <meta name="author" content="">
+
+        <meta name="csrf_token" content="">
+
+        <link rel="icon" href="{{ asset('img/favicon.ico') }}">
+
+        <title> {% block title %} {% endblock %} </title>
+
+            {% include 'common/css.html.twig' %} 
+
+            {% block css %} {% endblock %}
+
+    </head>
+
+    <body>
+
+        <div class='container'>
+
+            <div class="row">
+
+                <div class='col-md-12 mt-5'>
+
+                    <h6>Authorize this app to use your information?</h6>
+
+                    <a href="{{ base_url('oauth2/authorize?response_type=code&client_id=alex&redirect_uri=http://77.77.77.2:8000/&scope=basic&state=') }}" class="btn btn-sm btn-primary">Authorize</a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        {% include 'common/js.html.twig' %}
+
+        {% block js %} {% endblock %}
+
+    </body>
+
+</html>

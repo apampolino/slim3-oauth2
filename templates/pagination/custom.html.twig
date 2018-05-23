@@ -1,0 +1,36 @@
+{% if paginator.hasPages() %}
+    <nav class="blog-pagination">
+        {# Previous Page Link #}
+        {% if paginator.onFirstPage() %}
+            <a class="btn btn-outline-primary disabled">Older</a>
+        {% else %}
+            <a class="btn btn-outline-primary" href="{{ paginator.previousPageUrl() }}" rel="prev">Older</a>
+        {% endif %}
+
+        {# Pagination Elements #}
+        {% for element in paginator.elements %}
+            {# "Three Dots" Separator #}
+            {% if (is_string(element)) %}
+                <a class="btn btn-outline-primary disabled">{{ element }}</a>
+            {% endif %}
+
+            {# Array Of Links #}
+            {% if (is_array(element)) %}
+                {% for page, url in element %}
+                    {% if page == paginator.currentPage() %}
+                        <a class="btn btn-outline-primary active">{{ page }}</a>
+                    {% else %}
+                        <a class="btn btn-outline-primary" href="{{ url }}">{{ page }}</a>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+        {% endfor %}
+
+        {# Next Page Link #}
+        {% if paginator.hasMorePages() %}
+            <a class="btn btn-outline-primary" href="{{ paginator.nextPageUrl() }}" rel="next">Newer</a>
+        {% else %}
+            <a class="btn btn-outline-primary disabled">Newer</a>
+        {% endif %}
+    </nav>
+{% endif %}

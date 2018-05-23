@@ -1,0 +1,69 @@
+{% extends 'layouts/layout.html.twig' %}
+
+{% block title %} Blog Template for Bootstrap {% endblock %}
+
+{% block jumbotron %}
+
+    {% include 'common/jumbotron.html.twig' %}
+
+{% endblock %}
+
+{% block featured %}
+
+    {% include 'common/featured.html.twig' %}
+
+{% endblock %}
+
+{% block content %}
+
+<div class="col-md-8 blog-main">
+
+    <h3 class="pb-3 mb-4 font-italic border-bottom">
+
+        From the Firehose
+
+        <a class="btn btn-primary btn-md float-right" href="{{ base_url('blog/create') }}">New Post</a>
+
+    </h3>
+
+    {% set blogs = paginator.items %}
+
+    {% for blog in blogs %}
+
+        <div class="blog-post">
+
+            <form class="editForm" method="post" action="{{ base_url('blog/') ~ blog.id ~ '/delete' }}">
+
+                {{ csrf.field | raw }}
+                
+                {{ method_field('Delete') }}
+
+                <h2 class="blog-post-title">{{ blog.title }} 
+
+                        <a class="btn btn-success btn-sm" href="{{ base_url('blog/') ~ blog.id ~ '/edit' }}">Edit</a>
+
+                        <input type="submit" class="btn btn-danger btn-sm" value="Delete">
+                </h2>
+
+                <p class="blog-post-meta">{{ blog.createdAt|date('F j, Y') }} by <a href="#"> {{ blog.name }}</a></p>
+
+                {{ blog.body }}
+
+            </form>
+
+        </div>
+
+
+    {% endfor %}
+
+    {% include 'pagination/custom.html.twig' %}
+
+</div>
+
+{% endblock %}
+
+{% block sidebar %}
+
+    {% include 'common/sidebar.html.twig' %}
+
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends 'layouts/main.html.twig' %}
+
+{% block title %}
+{{blog.title}}
+{% endblock %}
+
+{% block content %}
+    <div>
+        <ul>
+            <li>{{ blog.title }}</li>
+            <li>{{ blog.body }}</li>
+            <li>{{ blog.name }}</li>
+            <li>{{ blog.email }}</li>
+            <li>{{ blog.getCreatedAt() }}</li>
+        </ul>
+    </div>
+{% endblock %}
