@@ -20,7 +20,7 @@ class ClientRepository implements ClientRepositoryInterface
      */
     public function getClientEntity($clientIdentifier, $grantType = null, $clientSecret = null, $mustValidateSecret = true)
     {
-        $client = Oauth2Client::where('client_id', $clientIdentifier)->first();
+        $client = OAuth2Client::where('client_id', $clientIdentifier)->first();
 
         if ($client) {
 
@@ -29,12 +29,12 @@ class ClientRepository implements ClientRepositoryInterface
                 return;
             }
 
-            $client = new ClientEntity();
-            $client->setIdentifier($clientIdentifier);
-            $client->setName($client->app_name);
-            $client->setRedirectUri($client->redirect_uri);
+            $client_entity = new ClientEntity();
+            $client_entity->setIdentifier($clientIdentifier);
+            $client_entity->setName($client->app_name);
+            $client_entity->setRedirectUri($client->redirect_uri);
 
-            return $client;
+            return $client_entity;
 
         } else {
 

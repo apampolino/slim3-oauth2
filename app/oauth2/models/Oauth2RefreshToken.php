@@ -14,7 +14,7 @@ class OAuth2RefreshToken extends Model {
 
     protected $primaryKey = 'id';
 
-    protected $fillable = ['refresh_token', 'identifier', 'expiry', 'revoked'];
+    protected $fillable = ['refresh_token', 'token_id', 'expiry', 'revoked'];
 
     public $timestamps = false;
 }
