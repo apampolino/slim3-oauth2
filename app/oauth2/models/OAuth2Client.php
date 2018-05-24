@@ -7,8 +7,6 @@ use Illuminate\Pagination\Paginator;
 use Illuminate\Database\Eloquent\Model;
 
 class OAuth2Client extends Model {
-
-    // protected $connection = 'db1';
     
     protected $table = 'oauth2_clients';
 

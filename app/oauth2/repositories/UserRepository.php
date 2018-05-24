@@ -12,6 +12,7 @@ namespace App\OAuth2\Repositories;
 use League\OAuth2\Server\Entities\ClientEntityInterface;
 use League\OAuth2\Server\Repositories\UserRepositoryInterface;
 use App\OAuth2\Entities\UserEntity;
+use App\OAuth2\Models\OAuth2User;
 
 class UserRepository implements UserRepositoryInterface
 {
@@ -24,9 +25,15 @@ class UserRepository implements UserRepositoryInterface
         $grantType,
         ClientEntityInterface $clientEntity
     ) {
-        if ($username === 'alex' && $password === 'test1234') {
-            fn_print_die($clientEntity, $grantType);
-            return new UserEntity();
+
+        $user = OAuth2User::where(['username' => $username])->first();
+
+        if ($user) {
+
+            if (strcmp(md5($password), $user->password) == 0) {
+
+                return new UserEntity();
+            }
         }
 
         return;

@@ -5,11 +5,13 @@ namespace App\OAuth2;
 use \Psr\Container\ContainerInterface;
 use \League\OAuth2\Server\AuthorizationServer;
 use \League\OAuth2\Server\CryptKey;
+use \League\OAuth2\Server\Grant\ImplicitGrant;
 use \App\OAuth2\Repositories\ClientRepository;
 use \App\OAuth2\Repositories\ScopeRepository;
 use \App\OAuth2\Repositories\AuthCodeRepository;
 use \App\OAuth2\Repositories\AccessTokenRepository;
 use \App\OAuth2\Repositories\RefreshTokenRepository;
+use \App\OAuth2\Repositories\UserRepository;
 
 class SlimOauth2 {
 
@@ -37,6 +39,7 @@ class SlimOauth2 {
         $authCodeRepository = new AuthCodeRepository();
         $accessTokenRepository = new AccessTokenRepository(); // instance of AccessTokenRepositoryInterface
         $refreshTokenRepository = new RefreshTokenRepository();
+        $userRepository = new UserRepository();
 
         // Path to public and private keys
         $privateKey =  new CryptKey(__DIR__ . '/../../keys/private.key', 'test1234');
@@ -58,29 +61,49 @@ class SlimOauth2 {
             new \DateInterval('PT1H') // access tokens will expire after 1 hour
         );
 
-        $auth_code_grant = new \League\OAuth2\Server\Grant\AuthCodeGrant(
+        $authorization = new \League\OAuth2\Server\Grant\AuthCodeGrant(
              $authCodeRepository,
              $refreshTokenRepository,
              new \DateInterval('PT10M') // authorization codes will expire after 10 minutes
          );
 
-        $auth_code_grant->setRefreshTokenTTL(new \DateInterval('P1M')); // refresh tokens will expire after 1 month
+        $authorization->setRefreshTokenTTL(new \DateInterval('P1M')); // refresh tokens will expire after 1 month
 
         // Enable the authentication code grant on the server
         $this->server->enableGrantType(
-            $auth_code_grant,
+            $authorization,
             new \DateInterval('PT1H') // access tokens will expire after 1 hour
         );
 
-        $refresh_token_grant = new \League\OAuth2\Server\Grant\RefreshTokenGrant($refreshTokenRepository);
+        $refresh_token = new \League\OAuth2\Server\Grant\RefreshTokenGrant($refreshTokenRepository);
 
-        $refresh_token_grant->setRefreshTokenTTL(new \DateInterval('P1M')); // new refresh tokens will expire after 1 month
+        $refresh_token->setRefreshTokenTTL(new \DateInterval('P1M')); // new refresh tokens will expire after 1 month
 
         // Enable the refresh token grant on the server
         $this->server->enableGrantType(
-            $refresh_token_grant,
+            $refresh_token,
             new \DateInterval('PT1H') // new access tokens will expire after an hour
         );
+
+        $password_grant = new \League\OAuth2\Server\Grant\PasswordGrant(
+                 $userRepository,
+                 $refreshTokenRepository
+        );
+
+        $password_grant->setRefreshTokenTTL(new \DateInterval('P1M')); // refresh tokens will expire after 1 month
+        
+        // Enable the password grant on the server
+        $this->server->enableGrantType(
+            $password_grant,
+            new \DateInterval('PT1H') // new access tokens will expire after an hour
+        );
+
+        // Enable the implicit grant on the server
+        $this->server->enableGrantType(
+            new ImplicitGrant(new \DateInterval('PT1H')),
+            new \DateInterval('PT1H') // access tokens will expire after 1 hour
+        );
+
     }
 
     public function loadServerMiddleware() {

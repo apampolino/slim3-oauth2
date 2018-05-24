@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Blog extends Model {
 
+    protected $connection = 'db2';
+
     protected $table = 'blogs';
 
     protected $primaryKey = 'id';

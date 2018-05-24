@@ -25,6 +25,15 @@ $app->group('/blog', function(){
 
 $app->group('/users', function() {
 
+    $this->get('', function(Request $request, Response $response, array $args) {
+
+        return $response;
+    });
+
+    $this->get('/{id}', function(Request $request, Response $response, array $args) {
+
+        return $response;
+    });
 
 })->add(new \League\OAuth2\Server\Middleware\ResourceServerMiddleware($container->get('oauth2')->middleware));
 
