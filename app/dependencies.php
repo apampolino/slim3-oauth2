@@ -26,13 +26,13 @@ $container['logger'] = function ($c) {
 
 $container['eloquent'] = function($c) {
     
-    $settings = $c->get('settings');
+    $settings = $c->get('settings')['eloquent'];
 
     $capsule = new \Illuminate\Database\Capsule\Manager;
 
-    $capsule->addConnection($settings['eloquent']['db1'], 'default');
+    $capsule->addConnection($settings['db1'], 'default');
 
-    $capsule->addConnection($settings['eloquent']['db2'], 'db2');
+    $capsule->addConnection($settings['db2'], 'db2');
 
     $capsule->setAsGlobal();
 
@@ -80,7 +80,9 @@ $container['view'] = function ($c) {
 
 $container['oauth2'] = function ($c) {
 
-    return new \App\OAuth2\SlimOAuth2($c);
+    $settings = $c->get('settings')['oauth2'];
+
+    return new \App\OAuth2\SlimOAuth2($c, $settings);
 };
 
 // controllers

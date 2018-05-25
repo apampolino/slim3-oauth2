@@ -32,6 +32,10 @@ $app->group('/users', function() {
 
     $this->get('/{id}', function(Request $request, Response $response, array $args) {
 
+        $body = $response->getBody();
+
+        $body->write('you have accessed this page using an access_token!');
+
         return $response;
     });
 

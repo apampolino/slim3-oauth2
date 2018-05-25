@@ -50,7 +50,40 @@ return [
             ]
         ],
 
-        
+        // OAuth2
+        'oauth2' => [
+            'private_key_path' => __DIR__ . '/../keys/private.key',
+            'private_key_pass' => 'test1234',
+            'public_key_path' =>  __DIR__ . '/../keys/public.key',
+            'encryption_key' => 'aNVLDla5uO8K5q4cZlBQtDgIq9lYnbM9PuH0DK2Nd3g=',
+            'grants' => [
+                'authorization_code' => [
+                    'enabled' => true,
+                    'authorization_code_expiry' => 'PT10M',
+                    'access_token_expiry' => 'PT1H',
+                    'refresh_token_expiry' => 'P1M'
+                ],
+                'password' => [
+                    'enabled' => true,
+                    'access_token_expiry' => 'PT1H',
+                    'refresh_token_expiry' => 'P1M'
+                ],
+                'client_credentials' => [
+                    'enabled' => true,
+                    'access_token_expiry' => 'PT1H',
+                ],
+                'refresh_token' => [
+                    'enabled' => true,
+                    'access_token_expiry' => 'PT1H',
+                    'refresh_token_expiry' => 'P1M'
+                ],
+                'implicit' => [
+                    'enabled' => true,
+                    'implicit_expiry' => 'PT1H',
+                    'access_token_expiry' => 'PT1H'
+                ]
+            ]
+        ],
         // PDO settings
         // 'db' => [
         //     'host' => 'localhost',

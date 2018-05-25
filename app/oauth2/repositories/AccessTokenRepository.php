@@ -27,8 +27,11 @@ class AccessTokenRepository implements AccessTokenRepositoryInterface
         $oauth_access_token = new OAuth2AccessToken;
 
         $oauth_access_token->access_token = $accessTokenEntity->getIdentifier();
+
         $oauth_access_token->user_identifier = $accessTokenEntity->getUserIdentifier();
+
         $oauth_access_token->client_id = $accessTokenEntity->getClient()->getIdentifier();
+        
         $oauth_access_token->expiry = $accessTokenEntity->getExpiryDateTime()->getTimestamp();
 
         $scopes = array();
@@ -39,6 +42,7 @@ class AccessTokenRepository implements AccessTokenRepositoryInterface
         }
 
         $oauth_access_token->scopes = implode(",", $scopes);
+
         $oauth_access_token->save();
     }
 
@@ -48,11 +52,11 @@ class AccessTokenRepository implements AccessTokenRepositoryInterface
     public function revokeAccessToken($tokenId)
     {
         // Some logic here to revoke the access token
-        $access = OAuth2AccessToken::where(['access_token' => $tokenId])->first();
+        $oauth_access_token = OAuth2AccessToken::where(['access_token' => $tokenId])->first();
 
-        $access->revoked = 1;
+        $oauth_access_token->revoked = 1;
 
-        $access->save();
+        $oauth_access_token->save();
     }
 
     /**
@@ -60,9 +64,9 @@ class AccessTokenRepository implements AccessTokenRepositoryInterface
      */
     public function isAccessTokenRevoked($tokenId)
     {
-        $access = OAuth2AccessToken::where(['access_token' => $tokenId]);
+        $oauth_access_token = OAuth2AccessToken::where(['access_token' => $tokenId])->first();
 
-        if ($access->revoked == 1) {
+        if ($oauth_access_token->revoked == 1) {
 
             return true;
         
